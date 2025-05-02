@@ -559,6 +559,10 @@
           "en": "State",
           "de": "Bundesland"
         },
+        "landmark": {
+          "en": "Landmark",
+          "de": "Landmarke"
+        },
         "street_address": {
           "en": "Street Address",
           "de": "Straßenadresse"
