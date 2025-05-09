@@ -38,6 +38,8 @@ const getAllOrders = async (req, res) => {
       { status: { $regex: `Processing`, $options: "i" } },
       { status: { $regex: `Delivered`, $options: "i" } },
       { status: { $regex: `Cancel`, $options: "i" } },
+      { status: { $regex: `ReturnRequested`, $options: "i" } },
+      { status: { $regex: `ReturnRejected`, $options: "i" } },
     ];
   }
 
@@ -208,6 +210,8 @@ const getDashboardRecentOrder = async (req, res) => {
       { status: { $regex: `Processing`, $options: "i" } },
       { status: { $regex: `Delivered`, $options: "i" } },
       { status: { $regex: `Cancel`, $options: "i" } },
+      { status: { $regex: `ReturnRequested`, $options: "i" } },
+      { status: { $regex: `ReturnRejected`, $options: "i" } },
     ];
 
     const totalDoc = await Order.countDocuments(queryObject);

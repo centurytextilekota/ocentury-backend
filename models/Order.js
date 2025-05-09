@@ -26,7 +26,7 @@ const orderSchema = new mongoose.Schema(
         type: String,
         required: false,
       },
-      state:{
+      state: {
         type: String,
         required: false,
       },
@@ -50,10 +50,10 @@ const orderSchema = new mongoose.Schema(
         type: String,
         required: false,
       },
-      location:{
+      location: {
         type: String,
-        required: false
-      }
+        required: false,
+      },
     },
     subTotal: {
       type: Number,
@@ -91,7 +91,14 @@ const orderSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["Pending", "Processing", "Delivered", "Cancelled"],
+      enum: [
+        "Pending",
+        "Processing",
+        "Delivered",
+        "Cancelled",
+        "ReturnRequested",
+        "ReturnRejected",
+      ],
       default: "Pending",
     },
   },
