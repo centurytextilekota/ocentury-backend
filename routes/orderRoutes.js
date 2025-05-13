@@ -11,6 +11,7 @@ const {
   getBestSellerProductChart,
   getDashboardCount,
   getDashboardAmount,
+  requestReturn,
 } = require("../controller/orderController");
 
 //get all orders
@@ -42,5 +43,9 @@ router.put("/:id", updateOrder);
 
 //delete a order
 router.delete("/:id", deleteOrder);
+
+// return order
+router.put("/return/requestReturn/:id", requestReturn);
+
 
 module.exports = router;
