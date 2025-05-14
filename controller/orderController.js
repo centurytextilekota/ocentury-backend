@@ -39,7 +39,7 @@ const getAllOrders = async (req, res) => {
       { status: { $regex: `Delivered`, $options: "i" } },
       { status: { $regex: `Cancel`, $options: "i" } },
       { status: { $regex: `ReturnRequested`, $options: "i" } },
-      { status: { $regex: `ReturnCompleted`, $options: "i" } },
+      { status: { $regex: `Returned`, $options: "i" } },
       { status: { $regex: `ReturnRejected`, $options: "i" } },
     ];
   }
@@ -193,38 +193,6 @@ const deleteOrder = (req, res) => {
   });
 };
 
-const requestReturn = async (req, res) => {
-  try {
-    const order = await Order.findById(req.params.id);
-    if (!order) {
-      return res.status(404).send({ message: "Order not found" });
-    }
-    if (order.status === "ReturnRequested") {
-      return res
-        .status(400)
-        .send({ message: "Order is already marked as Return Requested" });
-    }
-    if (order.status === "Delivered") {
-      await Order.updateOne(
-        { _id: req.params.id },
-        {
-          $set: {
-            status: "ReturnRequested",
-          },
-        }
-      );
-      res.status(200).send({ message: "Return Requested Successfully!" });
-    } else {
-      res.status(400).send({ message: "Order is not Delivered yet" });
-    }
-    
-  } catch (err) {
-    res.status(500).send({
-      message: err.message,
-    });
-  }
-};
-
 // get dashboard recent order
 const getDashboardRecentOrder = async (req, res) => {
   try {
@@ -244,7 +212,7 @@ const getDashboardRecentOrder = async (req, res) => {
       { status: { $regex: `Delivered`, $options: "i" } },
       { status: { $regex: `Cancel`, $options: "i" } },
       { status: { $regex: `ReturnRequested`, $options: "i" } },
-      { status: { $regex: `ReturnCompleted`, $options: "i" } },
+      { status: { $regex: `Returned`, $options: "i" } },
       { status: { $regex: `ReturnRejected`, $options: "i" } },
     ];
 
@@ -712,5 +680,4 @@ module.exports = {
   getDashboardRecentOrder,
   getDashboardCount,
   getDashboardAmount,
-  requestReturn,
 };

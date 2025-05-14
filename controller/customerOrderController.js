@@ -313,6 +313,36 @@ const sendEmailInvoiceToCustomer = async (req, res) => {
   }
 };
 
+const requestReturn = async (req, res) => {
+  try {
+    const order = await Order.findById(req.params.id);
+    if (!order) {
+      return res.status(404).send({ message: "Order not found" });
+    }
+    if (order.status === "ReturnRequested") {
+      return res
+        .status(400)
+        .send({ message: "Order is already marked as Return Requested" });
+    }
+    if (order.status === "Delivered") {
+      await Order.updateOne(
+        { _id: req.params.id },
+        {
+          $set: {
+            status: "ReturnRequested",
+          },
+        }
+      );
+      res.status(200).send({ message: "Return Requested Successfully!" });
+    } else {
+      res.status(400).send({ message: "Order is not Delivered yet" });
+    }
+  } catch (err) {
+    res.status(500).send({
+      message: err.message,
+    });
+  }
+};
 module.exports = {
   addOrder,
   getOrderById,
@@ -321,5 +351,6 @@ module.exports = {
   createOrderByRazorPay,
   addRazorpayOrder,
   sendEmailInvoiceToCustomer,
+  requestReturn,
   // addCustomerViaTelecaller,
 };

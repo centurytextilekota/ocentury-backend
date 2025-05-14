@@ -97,7 +97,7 @@ const orderSchema = new mongoose.Schema(
         "Delivered",
         "Cancelled",
         "ReturnRequested",
-        "ReturnCompleted",
+        "Returned",
         "ReturnRejected",
       ],
       default: "Pending",

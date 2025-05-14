@@ -8,6 +8,8 @@ const {
   addRazorpayOrder,
   createOrderByRazorPay,
   sendEmailInvoiceToCustomer,
+  requestReturn,
+
 } = require("../controller/customerOrderController");
 
 const { emailVerificationLimit } = require("../lib/email-sender/sender");
@@ -36,5 +38,7 @@ router.post(
   emailVerificationLimit,
   sendEmailInvoiceToCustomer
 );
+// return order
+router.put("/requestReturn/:id", requestReturn);
 
 module.exports = router;
