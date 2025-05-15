@@ -102,6 +102,10 @@ const orderSchema = new mongoose.Schema(
       ],
       default: "Pending",
     },
+    deliveryDate: {
+      type: Date,
+      default: null,
+    },
   },
   {
     timestamps: true,
