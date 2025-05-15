@@ -161,6 +161,13 @@ const updateOrder = async (req, res) => {
     if (!order) {
       return res.status(404).send({ message: "Order not found" });
     }
+    const updateFields ={
+      status: newStatus,
+    }
+
+    if(newStatus === "Delivered"){
+      updateFields.deliveryDate = new Date()
+    }
 
     // if (order.status === "Delivered") {
     //   return res
@@ -170,7 +177,8 @@ const updateOrder = async (req, res) => {
 
     await Order.updateOne(
       { _id: req.params.id },
-      { $set: { status: newStatus } }
+      // { $set: { status: newStatus } }
+      { $set:  updateFields  }
     );
 
     res.status(200).send({ message: "Order Updated Successfully!" });
