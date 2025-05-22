@@ -137,7 +137,16 @@ const updateManyAttribute = async (req, res) => {
 
 const getAttributeById = async (req, res) => {
   try {
-    const attribute = await Attribute.findById(req.params.id);
+    const attribute = await Attribute.findById(req.params.id).lean();
+   if (!attribute){
+      res.status(404).send({
+        message: "Attribute not found",
+      });
+    }
+
+    attribute.varients = attribute.variants.sort((a,b) =>{
+      return a.name.en.localeCompare(b.name.en,'en', { numeric:true});
+    })
 
     // console.log(attribute);
 
