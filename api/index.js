@@ -54,7 +54,6 @@ app.options("*", cors()); // include before other routes
 const allowedOrigins = [
   process.env.ADMIN_URL,
   process.env.STORE_URL,
-  "http://localhost:3000", // optional: for local testing
 ];
 app.use(
   cors({
