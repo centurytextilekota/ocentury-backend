@@ -43,19 +43,33 @@ app.use(express.json({ limit: "4mb" }));
 app.use(helmet());
 app.options("*", cors()); // include before other routes
 // app.use(cors());
+// app.use(
+//   cors({
+//     origin: "*", // Allows requests from any frontend
+//     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+//     allowedHeaders: ["Content-Type", "Authorization"],
+//     credentials: true, // If using cookies or authentication
+//   })
+// );
+const allowedOrigins = [
+  process.env.ADMIN_URL,
+  process.env.STORE_URL,
+  "http://localhost:3000", // optional: for local testing
+];
 app.use(
   cors({
-    origin: "*", // Allows requests from any frontend
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true, // If using cookies or authentication
+    credentials: true,
   })
 );
-
-//root route
-app.get("/", (req, res) => {
-  res.send("App works properly!");
-});
 
 //this for route will need for store front, also for admin dashboard
 app.use("/api/products/", productRoutes);
