@@ -47,7 +47,6 @@ const getAllOrders = async (req, res) => {
   if (customerName) {
     queryObject.$or = [
       { "user_info.name": { $regex: `${customerName}`, $options: "i" } },
-      { invoice: { $regex: `${customerName}`, $options: "i" } },
     ];
   }
 

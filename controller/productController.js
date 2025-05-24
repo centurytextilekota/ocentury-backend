@@ -52,7 +52,7 @@ const getShowingProducts = async (req, res) => {
 };
 
 const getAllProducts = async (req, res) => {
-  const { title, category, price, page, limit } = req.query;
+  const { title, category, price, page, limit,sku } = req.query;
 
   // console.log("getAllProducts");
 
@@ -63,6 +63,9 @@ const getAllProducts = async (req, res) => {
       [`title.${lang}`]: { $regex: `${title}`, $options: "i" },
     }));
     queryObject.$or = titleQueries;
+  }
+  if (sku) {
+    queryObject.sku = sku;
   }
 
   if (price === "low") {
