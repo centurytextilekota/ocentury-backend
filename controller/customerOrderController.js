@@ -218,7 +218,9 @@ const getOrderCustomer = async (req, res) => {
       {
         $match: {
           status: "Pending",
-          user: mongoose.Types.ObjectId(req.user._id),
+          user: mongoose.Types.ObjectId.createFromHexString(req.user._id),
+          // old code
+          // user: mongoose.Types.ObjectId(req.user._id),
         },
       },
       {
@@ -237,7 +239,9 @@ const getOrderCustomer = async (req, res) => {
       {
         $match: {
           status: "Processing",
-          user: mongoose.Types.ObjectId(req.user._id),
+          user: mongoose.Types.ObjectId.createFromHexString(req.user._id),
+          // old code
+          // user: mongoose.Types.ObjectId(req.user._id),
         },
       },
       {
@@ -255,7 +259,9 @@ const getOrderCustomer = async (req, res) => {
       {
         $match: {
           status: "Delivered",
-          user: mongoose.Types.ObjectId(req.user._id),
+          user: mongoose.Types.ObjectId.createFromHexString(req.user._id),
+          // old code
+          // user: mongoose.Types.ObjectId(req.user._id),
         },
       },
       {
