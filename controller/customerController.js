@@ -608,13 +608,50 @@ const getCustomerById = async (req, res) => {
 };
 
 // Shipping address create or update
+
+// old code 
+// const addShippingAddress = async (req, res) => {
+//   try {
+//     const customerId = req.params.id;
+//     const newShippingAddress = req.body;
+//     console.log(newShippingAddress);
+//     delete newShippingAddress.phone;
+//     console.log(newShippingAddress);
+//     // Find the customer by ID and update the shippingAddress field
+//     const result = await Customer.updateOne(
+//       { _id: customerId },
+//       {
+//         $set: {
+//           shippingAddress: newShippingAddress,
+//         },
+//       },
+//       { upsert: true } // Create a new document if no document matches the filter
+//     );
+
+//     if (result.nModified > 0 || result.upserted) {
+//       return res.send({
+//         message: "Shipping address added or updated successfully.",
+//       });
+//     } else {
+//       return res.status(404).send({ message: "Customer not found." });
+//     }
+//   } catch (err) {
+//     console.log(err);
+
+//     res.status(500).send({
+//       message: err.message,
+//     });
+//   }
+// };
+
 const addShippingAddress = async (req, res) => {
   try {
     const customerId = req.params.id;
     const newShippingAddress = req.body;
-    console.log(newShippingAddress);
-    delete newShippingAddress.phone;
-    console.log(newShippingAddress);
+    // console.log("newShippingAddress",newShippingAddress);
+    // delete newShippingAddress.phone;
+    // console.log(newShippingAddress);
+
     // Find the customer by ID and update the shippingAddress field
     const result = await Customer.updateOne(
       { _id: customerId },
@@ -623,10 +660,11 @@ const addShippingAddress = async (req, res) => {
           shippingAddress: newShippingAddress,
         },
       },
-      { upsert: true } // Create a new document if no document matches the filter
+      { upsert: true }
     );
 
-    if (result.nModified > 0 || result.upserted) {
+    // Fixed: Use the correct properties for newer Mongoose versions
+    if (result.modifiedCount > 0 || result.upsertedCount > 0) {
       return res.send({
         message: "Shipping address added or updated successfully.",
       });
@@ -635,7 +673,6 @@ const addShippingAddress = async (req, res) => {
     }
   } catch (err) {
     console.log(err);
-
     res.status(500).send({
       message: err.message,
     });

@@ -46,6 +46,59 @@ const addOrder = async (req, res) => {
   }
 };
 
+// add order api with logs for debugging
+// const addOrder = async (req, res) => {
+//   console.log("Received addOrder request");
+//   console.log("user._id:", req.user._id);
+
+//   try {
+//     const newOrder = new Order({
+//       ...req.body,
+//       user: req.user._id,
+//     });
+//     console.log("Request body:", req.body);
+//     console.log("Saving new order...");
+//     const order = await newOrder.save();
+//     console.log("Order saved:", order._id);
+
+//     // Check if order.user_info exists
+//     if (!order.user_info || !order.user_info.zipCode || !order.user_info.name) {
+//       console.warn("Missing user_info in order. Skipping notification.");
+//     } else {
+//       const newNotification = new StoreNotification({
+//         zipCode: order.user_info.zipCode,
+//         message: `New order placed by ${order.user_info.name}!`,
+//         status: "unread",
+//       });
+
+//       try {
+//         console.log("Saving store notification...");
+//         await newNotification.save();
+//         console.log("Notification saved");
+//       } catch (notificationErr) {
+//         console.error("Error saving notification:", notificationErr.message);
+//       }
+//     }
+
+//     // Respond to client before running background task (optional)
+//     res.status(201).send(order);
+//     console.log("Response sent to client");
+
+//     // Handle product quantity in background
+//     try {
+//       console.log("Handling product quantity...");
+//       await handleProductQuantity(order.cart);
+//       console.log("Product quantity handled");
+//     } catch (quantityErr) {
+//       console.error("Error updating product quantities:", quantityErr.message);
+//     }
+//   } catch (err) {
+//     console.log("Error in addOrder:", err);
+//     res.status(500).send({
+//       message: err.message,
+//     });
+//   }
+// };
 //create payment intent for stripe
 const createPaymentIntent = async (req, res) => {
   const { total: amount, cardInfo: payment_intent, email } = req.body;

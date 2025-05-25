@@ -11,6 +11,8 @@ const addProduct = async (req, res) => {
       productId: req.body.productId
         ? req.body.productId
         :new mongoose.Types.ObjectId(),
+        // old code
+        //  mongoose.Types.ObjectId(),
     });
     //  console.log('product data',req.body)
 

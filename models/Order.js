@@ -11,6 +11,7 @@ const orderSchema = new mongoose.Schema(
     invoice: {
       type: Number,
       required: false,
+      unique: true,
     },
     cart: [{}],
     user_info: {
@@ -112,11 +113,35 @@ const orderSchema = new mongoose.Schema(
   }
 );
 
-const Order = mongoose.model(
-  "Order",
-  orderSchema.plugin(AutoIncrement, {
-    inc_field: "invoice",
-    start_seq: 10000,
-  })
-);
+// old code
+// const Order = mongoose.model(
+//   "Order",
+//   orderSchema.plugin(AutoIncrement, {
+//     inc_field: "invoice",
+//     start_seq: 10000,
+//   })
+// );
+
+// new code
+// Pre-save middleware to generate invoice number manually
+orderSchema.pre('save', async function(next) {
+  if (this.isNew && !this.invoice) {
+    try {
+      // Find the highest invoice number and increment
+      const lastOrder = await this.constructor.findOne({}, {}, { sort: { 'invoice': -1 } });
+      
+      if (lastOrder && lastOrder.invoice) {
+        this.invoice = lastOrder.invoice + 1;
+      } else {
+        // Start from 10000 if no orders exist
+        this.invoice = 10000;
+      }
+    } catch (error) {
+      return next(error);
+    }
+  }
+  next();
+});
+
+const Order = mongoose.model("Order", orderSchema);
 module.exports = Order;
