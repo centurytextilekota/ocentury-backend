@@ -813,17 +813,17 @@ const updateCustomer = async (req, res) => {
 };
 
 const deleteCustomer = (req, res) => {
-  Customer.deleteOne({ _id: req.params.id }, (err) => {
-    if (err) {
-      res.status(500).send({
-        message: err.message,
-      });
-    } else {
+  Customer.deleteOne({ _id: req.params.id })
+    .then(() => {
       res.status(200).send({
         message: "User Deleted Successfully!",
       });
-    }
-  });
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: err.message,
+      });
+    });
 };
 
 module.exports = {
