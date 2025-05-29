@@ -383,19 +383,31 @@ const requestReturn = async (req, res) => {
         .status(400)
         .send({ message: "Order is already marked as Return Requested" });
     }
-    if (order.status === "Delivered") {
-      await Order.updateOne(
-        { _id: req.params.id },
-        {
-          $set: {
-            status: "ReturnRequested",
-          },
-        }
-      );
-      res.status(200).send({ message: "Return Requested Successfully!" });
-    } else {
-      res.status(400).send({ message: "Order is not Delivered yet" });
+    const today = new Date();
+    const deliveryDate = new Date(order.deliveryDate);
+    
+    // Check if the order was delivered more than 7 days ago
+    const diffInTime  = today.getTime() - deliveryDate.getTime();
+    const diffInDays = diffInTime/ (1000 * 3600* 24);
+    if(diffInDays > 7){
+      return res.status(400).send({
+        message:"You can only request a return within 7 days of delivery.",
+      })
     }
+
+      if (order.status === "Delivered") {
+        await Order.updateOne(
+          { _id: req.params.id },
+          {
+            $set: {
+              status: "ReturnRequested",
+            },
+          }
+        );
+        res.status(200).send({ message: "Return Requested Successfully!" });
+      } else {
+        res.status(400).send({ message: "Order is not Delivered yet" });
+      }
   } catch (err) {
     res.status(500).send({
       message: err.message,
