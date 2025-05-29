@@ -36,6 +36,7 @@ const getAllOrders = async (req, res) => {
     queryObject.$or = [
       { status: { $regex: `Pending`, $options: "i" } },
       { status: { $regex: `Processing`, $options: "i" } },
+      { status: { $regex: `Shipped`, $options: "i" } },
       { status: { $regex: `Delivered`, $options: "i" } },
       { status: { $regex: `Cancel`, $options: "i" } },
       { status: { $regex: `ReturnRequested`, $options: "i" } },
@@ -216,6 +217,7 @@ const getDashboardRecentOrder = async (req, res) => {
     queryObject.$or = [
       { status: { $regex: `Pending`, $options: "i" } },
       { status: { $regex: `Processing`, $options: "i" } },
+      { status: { $regex: `Shipped`, $options: "i" } },
       { status: { $regex: `Delivered`, $options: "i" } },
       { status: { $regex: `Cancel`, $options: "i" } },
       { status: { $regex: `ReturnRequested`, $options: "i" } },
