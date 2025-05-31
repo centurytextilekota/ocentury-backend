@@ -12,6 +12,7 @@ const getAllOrders = async (req, res) => {
     // sellFrom,
     startDate,
     customerName,
+    invoice,
   } = req.query;
 
   //  day count
@@ -64,6 +65,18 @@ const getAllOrders = async (req, res) => {
       $gt: start_date,
       $lt: endDate,
     };
+  }
+  if (invoice ) {
+    const invoiceNumber = Number(invoice);
+    if (!isNaN(invoiceNumber) && invoiceNumber > 0) {
+      queryObject.invoice = invoiceNumber;
+    } 
+    else {
+      // Handle invalid invoice number case
+      // throw new Error("Invalid invoice number");
+      console.log("Invalid invoice number");
+      return res.status(400).send({message:"invalid invoice number"})
+    }
   }
   if (method) {
     queryObject.paymentMethod = { $regex: `${method}`, $options: "i" };
