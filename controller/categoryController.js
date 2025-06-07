@@ -37,12 +37,23 @@ const addAllCategory = async (req, res) => {
 // get status show category
 const getShowingCategory = async (req, res) => {
   try {
-    // console.log("getShowingCategory");
-
     const categories = await Category.find({ status: "show" }).sort({
       _id: -1,
     });
+    // new code of category sorting
+    categories.sort((a, b) => {
+      const nameA = a.name.en.toUpperCase();
+      const nameB = b.name.en.toUpperCase();
+      if (nameA < nameB) {
+        return -1;
+      }
+      if (nameA > nameB) {
+        return 1;
+      }
+      return 0;
+    });
 
+    // console.log("sorted categories", categories);
     const categoryList = readyToParentAndChildrenCategory(categories);
     // console.log("category list", categoryList.length);
     res.send(categoryList);
