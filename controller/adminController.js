@@ -237,17 +237,17 @@ const updateStaff = async (req, res) => {
 };
 
 const deleteStaff = (req, res) => {
-  Admin.deleteOne({ _id: req.params.id }, (err) => {
-    if (err) {
-      res.status(500).send({
-        message: err.message,
-      });
-    } else {
+  Admin.deleteOne({ _id: req.params.id })
+    .then(() => {
       res.status(200).send({
         message: "Admin Deleted Successfully!",
       });
-    }
-  });
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: err.message,
+      });
+    });
 };
 
 const updatedStatus = async (req, res) => {
