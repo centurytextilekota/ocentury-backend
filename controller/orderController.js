@@ -48,10 +48,12 @@ const getAllOrders = async (req, res) => {
 
   if (customerName) {
     queryObject.$or = [
-      { "user_info.name": { $regex: `${customerName}`, $options: "i" } },
+      { "user_info.name": { $regex: customerName, $options: "i" } },
+      { "user_info.email": { $regex: customerName, $options: "i" } },
+      { "user_info.contact": { $regex: customerName, $options: "i" } },
     ];
   }
-
+  
   if (day) {
     queryObject.createdAt = { $gte: dateTime, $lte: today };
   }
