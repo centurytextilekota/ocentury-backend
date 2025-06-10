@@ -37,13 +37,14 @@ const addAllCategory = async (req, res) => {
 // get status show category
 const getShowingCategory = async (req, res) => {
   try {
-    const categories = await Category.find({ status: "show" }).sort({
-      _id: -1,
-    });
+    // const categories = await Category.find({ status: "show" }).sort({
+    //   _id: -1,
+    // });
     // new code of category sorting
+    const categories = await Category.find({ status: "show" });
     categories.sort((a, b) => {
-      const nameA = a.name.en.toUpperCase();
-      const nameB = b.name.en.toUpperCase();
+      const nameA = a?.name?.en?.toUpperCase();
+      const nameB = b?.name?.en?.toUpperCase();
       if (nameA < nameB) {
         return -1;
       }
@@ -67,7 +68,22 @@ const getShowingCategory = async (req, res) => {
 // get all category parent and child
 const getAllCategory = async (req, res) => {
   try {
-    const categories = await Category.find({}).sort({ _id: -1 });
+    // const categories = await Category.find({}).sort({ _id: -1 });
+
+    // new code of category sorting
+    const categories = await Category.find({});
+    // console.log("category called");
+    categories.sort((a, b) => {
+      const nameA = a?.name?.en?.toUpperCase();
+      const nameB = b?.name?.en?.toUpperCase();
+      if (nameA < nameB) {
+        return -1;
+      }
+      if (nameA > nameB) {
+        return 1;
+      }
+      return 0;
+    });
 
     const categoryList = readyToParentAndChildrenCategory(categories);
     //  console.log('categoryList',categoryList)
@@ -81,7 +97,20 @@ const getAllCategory = async (req, res) => {
 
 const getAllCategories = async (req, res) => {
   try {
-    const categories = await Category.find({}).sort({ _id: -1 });
+    // const categories = await Category.find({}).sort({ _id: -1 });
+    // new code of category sorting
+    const categories = await Category.find({})
+    categories.sort((a,b) =>{
+      const nameA = a?.name?.en?.toUpperCase();
+      const nameB = b?.name?.en?.toUpperCase();
+      if (nameA < nameB) {
+        return -1;
+      }
+      if (nameA > nameB) {
+        return 1;
+      }
+      return 0;
+    })
 
     res.send(categories);
   } catch (err) {
