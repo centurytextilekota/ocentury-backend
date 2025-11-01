@@ -51,10 +51,7 @@ app.options("*", cors()); // include before other routes
 //     credentials: true, // If using cookies or authentication
 //   })
 // );
-const allowedOrigins = [
-  process.env.ADMIN_URL,
-  process.env.STORE_URL,
-];
+const allowedOrigins = [process.env.ADMIN_URL, process.env.STORE_URL];
 app.use(
   cors({
     origin: function (origin, callback) {
@@ -142,7 +139,9 @@ IO.on("connection", (socket) => {
   socket.on("disconnect", () => {});
 });
 
-IO_SERVER.listen(PORT, () => console.log(`server running on port ${PORT}`));
+IO_SERVER.listen(PORT, "0.0.0.0", () => {
+  console.log(`Server running on port ${PORT}`);
+});
 
 // app.listen(PORT, () => console.log(`server running on port ${PORT}`));
 
