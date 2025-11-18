@@ -429,6 +429,7 @@ const loginCustomer = async (req, res) => {
 
 const forgetPassword = async (req, res) => {
   const isAdded = await Customer.findOne({ email: req.body.email });
+  console.log("isAdded", isAdded);
   if (!isAdded) {
     return res.status(404).send({
       message: "User Not found with this email!",
@@ -609,7 +610,7 @@ const getCustomerById = async (req, res) => {
 
 // Shipping address create or update
 
-// old code 
+// old code
 // const addShippingAddress = async (req, res) => {
 //   try {
 //     const customerId = req.params.id;
